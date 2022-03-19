@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock: MyString
+  volume: 1
+  price: 1.5
+  method: MyString
+
+two:
+  stock: MyString
+  volume: 1
+  price: 1.5
+  method: MyString
