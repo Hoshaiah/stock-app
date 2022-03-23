@@ -14,20 +14,29 @@ class TransactionsController < ApplicationController
     end
 
     def create
+        @stock = current_user.stocks.find_by symbol: transaction_params[:stock]
         @transaction = current_user.transactions.build(transaction_params)
         @transaction.method = params[:method]
+
         if @transaction.method == "Buy"
             @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
-            if @transaction.save
+            if @stocks
+                @stock.volume += transaction_params[:volume]
+                @stock.average_price = (@stock.average_price * @stock.volume + transaction_params[:price] * transaction_params[:volume]) / @stock.volume + transaction_params[:volume]
+            else
+                @stock = current_user.stocks.build(symbol: transaction_params[:stock], average_price: @transaction.price, volume: transaction_params[:volume]) 
+            end
+
+            if @transaction.save && @stock.save
                 redirect_to transactions_url, notice: "Category was successfully created."
             end
-        elsif transaction_params[:method] == "Sell"
-            user_stock = current_user.stocks.where transaction_param[:stock] 
-            if user_stock
-                if user_stock >= transaction_param[:volume]
+        elsif @transaction.method == "Sell"
+            if @stock
+                if @stock.volume >= transaction_params[:volume].to_i
                     @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
-                    if @transaction.save
-                        redirect_to transactions_url, notice: "Category was successfully created."
+                    @stock.volume -= transaction_params[:volume].to_i
+                    if @transaction.save && @stock.save
+                        redirect_to transactions_url, notice: "Stocks were successfully sold."
                     end  
                 else
                     redirect_to transactions_url, notice: "You do not own enough shares of this stock."
