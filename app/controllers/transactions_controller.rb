@@ -1,6 +1,11 @@
 class TransactionsController < ApplicationController
     before_action :transaction_params, only: %i[create]
+    
     def index
+        @transactions = current_user.transactions.all
+    end
+
+    def new
         @transaction = Transaction.new
         stock = params["stock"] ? params["stock"] : ""
         if SYMBOLS.include? stock
@@ -17,7 +22,19 @@ class TransactionsController < ApplicationController
                 redirect_to transactions_url, notice: "Category was successfully created."
             end
         elsif transaction_params[:method] == "Sell"
-
+            user_stock = current_user.stocks.where transaction_param[:stock] 
+            if user_stock
+                if user_stock >= transaction_param[:volume]
+                    @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
+                    if @transaction.save
+                        redirect_to transactions_url, notice: "Category was successfully created."
+                    end  
+                else
+                    redirect_to transactions_url, notice: "You do not own enough shares of this stock."
+                end
+            else
+                redirect_to transactions_url, notice: "You do not own any shares of this stock."
+            end
         end
     end
 
