@@ -1,6 +1,9 @@
-<h1>
-  <%=@stock_data%>
-</h1>
+<% if @stock_data %>
+  <h1><%=@stock_data.symbol%></h1>
+  <h2><%=@stock_data.company_name%></h2>
+  <h2><%=@stock_data.latest_price%></h2>
+  <h2><%=@stock_data.change_percent_s%></h2>
+<% end %>
 <%= form_with(model: @transaction) do |form| %>
   <% if @transaction.errors.any? %>
     <div id="error_explanation">
@@ -15,7 +18,7 @@
 
   <div class="font-bold mt-8 ml-12">
     <%= form.label :stock, "Stock Symbol" %>
-    <%= form.select :stock , options_for_select(SYMBOLS, @stock_data), :id => "show_stock"  %>
+    <%= form.select :stock , options_for_select(SYMBOLS, @stock_data ? @stock_data.symbol : SYMBOLS.first), :id => "show_stock"  %>
     <%= link_to "Quote", transactions_path(:stock => ""), :id=>"quote_link"%>
     <%= javascript_pack_tag "show_stock" %>
   </div>
@@ -25,6 +28,12 @@
     <%= form.number_field :volume%>
   </div>
 
+  <div>
+    <%= form.submit "Buy", :name => :method %>
+  </div>
 
+  <div>
+    <%= form.submit "Sell" %>
+  </div>
 
 <% end %>
