@@ -4,6 +4,7 @@ const originalHREF = link.href
 link.href += input.value
 
 function output(value) {
+    value = value.replace("+","%2B")
     link.href = originalHREF + value
 }
 
