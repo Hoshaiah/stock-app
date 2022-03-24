@@ -26,18 +26,22 @@ class TransactionsController < ApplicationController
             else
                 @stock = current_user.stocks.build(symbol: transaction_params[:stock], average_price: @transaction.price, volume: transaction_params[:volume]) 
             end
-
-            if @transaction.save && @stock.save
-                redirect_to transactions_url, notice: "Category was successfully created."
+            
+            ActiveRecord::Base.transaction do
+                if @transaction.save && @stock.save
+                    redirect_to transactions_url, notice: "Category was successfully created."
+                end
             end
         elsif @transaction.method == "Sell"
             if @stock
                 if @stock.volume >= transaction_params[:volume].to_i
                     @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
                     @stock.volume -= transaction_params[:volume].to_i
-                    if @transaction.save && @stock.save
-                        redirect_to transactions_url, notice: "Stocks were successfully sold."
-                    end  
+                    ActiveRecord::Base.transaction do
+                        if @transaction.save && @stock.save
+                            redirect_to transactions_url, notice: "Stocks were successfully sold."
+                        end  
+                    end
                 else
                     redirect_to transactions_url, notice: "You do not own enough shares of this stock."
                 end
