@@ -58,3 +58,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 
 gem 'iex-ruby-client'
+gem "tailwindcss-rails", "~> 2.0"

@@ -1,0 +1,16 @@
+<h1> User Portfolio</h1>
+<table>
+    <tr>
+        <th>Stock</th>
+        <th>Average Price</th>
+        <th>Volume</th>
+    </tr>
+
+    <% @stocks.each do |stock| %>
+        <tr>
+            <td><%= stock.symbol%> </td>
+            <td><%= stock.average_price %> </td>
+            <td><%= stock.volume %> </td>
+        </tr>
+    <% end %>
+</table
