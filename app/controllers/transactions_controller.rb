@@ -1,4 +1,6 @@
 class TransactionsController < ApplicationController
+    before_action :redirect_to_admin, only: %i[new]
+    before_action :authenticate_user!
     before_action :transaction_params, only: %i[create]
     
     def index
@@ -55,5 +57,11 @@ class TransactionsController < ApplicationController
 
     def transaction_params
         params.require(:transaction).permit(:volume, :stock, :method)
+    end
+
+    def redirect_to_admin
+        if admin_signed_in?
+            redirect_to admin_home_url
+        end
     end
 end
