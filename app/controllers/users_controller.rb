@@ -40,6 +40,7 @@ class UsersController < ApplicationController
 
     def approve
         if @user.update(approved: true)
+            AdminMailer.admin_approval(@user).deliver_now
             redirect_to users_all_path, notice: "#{@user.email} has been approved"
         else
             redirect_to users_all_path, notice: "#{@user.email} approval error"
