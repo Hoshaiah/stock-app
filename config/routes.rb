@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "admin/users/:id/edit", to:"users#edit", as: "edit_user"
   patch "admin/users/:id/edit", to:"users#update", as: "update_user"
   get "admin/users/new", to:"users#new", as: "new_user"
+  patch "admin/users/:id/approve", to:"users#approve", as: "approve_user"
 
   devise_for :users
   root to: "transactions#new", as: "home"
