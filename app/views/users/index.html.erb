@@ -1,0 +1,22 @@
+<%= link_to "New User", new_user_path %>
+<h1> Users </h1>
+<table>
+    <tr>
+        <th> User ID </th>
+        <th> User email </th>
+        <th> Status </th>
+        <th> Actions</th>
+    </tr>
+
+    <% @users.each do |user| %>
+        <tr>
+            <td><%= user.id%> </td>
+            <td><%= user.email%> </td>
+            <td><%= "stats" %> </td>
+            <td>
+                <%= link_to "Edit", edit_user_path(user.id)%>
+                <%= link_to "Destroy", destroy_user_path(user.id), method: "delete"%>
+            </td>
+        </tr>
+    <% end %>
+</table

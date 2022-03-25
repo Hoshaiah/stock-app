@@ -1,0 +1,26 @@
+<h1> Transactions </h1>
+<table>
+    <tr>
+        <th> User ID </th>
+        <th> User email </th>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Volume</th>
+        <th>Amount</th>
+        <th>Action</th>
+        <th>DateTime</th>
+    </tr>
+
+    <% @transactions.each do |transaction| %>
+        <tr>
+            <td><%= transaction.user_id %> </td>
+            <td><%= transaction.user.email %> </td>
+            <td><%= transaction.stock %> </td>
+            <td><%= transaction.price %> </td>
+            <td><%= transaction.volume %> </td>
+            <td><%= "$" +(transaction.volume * transaction.price).round(2).to_s %> </td>
+            <td><%= transaction.method %> </td>
+            <td><%= transaction.created_at %> </td>
+        </tr>
+    <% end %>
+</table
