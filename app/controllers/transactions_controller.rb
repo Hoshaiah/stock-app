@@ -4,7 +4,7 @@ class TransactionsController < ApplicationController
     before_action :transaction_params, only: %i[create]
     
     def index
-        @transactions = current_user.transactions.all
+        @transactions = current_user.transactions
     end
 
     def new
@@ -22,7 +22,7 @@ class TransactionsController < ApplicationController
 
         if @transaction.method == "Buy"
             @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
-            if @stocks
+            if @stock
                 @stock.volume += transaction_params[:volume]
                 @stock.average_price = (@stock.average_price * @stock.volume + transaction_params[:price] * transaction_params[:volume]) / @stock.volume + transaction_params[:volume]
             else
