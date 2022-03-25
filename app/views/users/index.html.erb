@@ -4,7 +4,7 @@
     <tr>
         <th> User ID </th>
         <th> User email </th>
-        <th> Status </th>
+        <th> Approved ?</th>
         <th> Actions</th>
     </tr>
 
@@ -12,8 +12,11 @@
         <tr>
             <td><%= user.id%> </td>
             <td><%= user.email%> </td>
-            <td><%= "stats" %> </td>
+            <td><%= user.approved ?  "✓" : "Pending" %> </td>
             <td>
+                <% if !user.approved %> 
+                    <%= link_to "Approve", approve_user_path(user.id), method: "patch"%>
+                <% end %>
                 <%= link_to "Edit", edit_user_path(user.id)%>
                 <%= link_to "Destroy", destroy_user_path(user.id), method: "delete"%>
             </td>

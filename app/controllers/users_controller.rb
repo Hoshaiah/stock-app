@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     before_action :authenticate_admin!
-    before_action :set_user, only: %i[update show edit destroy]
+    before_action :set_user, only: %i[update show edit destroy approve]
     before_action :user_params, only: %i[update create]
     def index
         @users = User.all
@@ -31,9 +31,18 @@ class UsersController < ApplicationController
             redirect_to users_all_path, notice: "User has been created"
         end
     end
+
     def destroy
         if @user.destroy
             redirect_to users_all_path, notice: "User was successfully destroyed"
+        end
+    end
+
+    def approve
+        if @user.update(approved: true)
+            redirect_to users_all_path, notice: "#{@user.email} has been approved"
+        else
+            redirect_to users_all_path, notice: "#{@user.email} approval error"
         end
     end
 
