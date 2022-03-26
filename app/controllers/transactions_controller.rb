@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
             @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
             if @stock
                 @stock.volume += transaction_volume
-                @stock.average_price = (@stock.average_price * @stock.volume + transaction_price * transaction_volume) / @stock.volume + transaction_volume
+                @stock.average_price = (@stock.average_price * @stock.volume + transaction_price * transaction_volume) / (@stock.volume + transaction_volume))
             else
                 @stock = current_user.stocks.build(symbol: transaction_params[:stock], average_price: @transaction.price, volume: transaction_volume) 
             end
