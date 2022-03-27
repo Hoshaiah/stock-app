@@ -17,42 +17,18 @@ class TransactionsController < ApplicationController
     end
 
     def create
-        @stock = current_user.stocks.find_by symbol: transaction_params[:stock]
-        @transaction = current_user.transactions.build(transaction_params)
-        @transaction.method = params[:method]
-        transaction_price = transaction_params[:price].to_f
-        transaction_volume = transaction_params[:volume].to_i
-
-        if @transaction.method == "Buy"
-            @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
-            if @stock
-                @stock.volume += transaction_volume
-                @stock.average_price = (@stock.average_price * @stock.volume + transaction_price * transaction_volume) / (@stock.volume + transaction_volume)
-            else
-                @stock = current_user.stocks.build(symbol: transaction_params[:stock], average_price: @transaction.price, volume: transaction_volume) 
+        begin
+            if params[:method]== "Buy"
+                current_user.buy_stock!(transaction_params[:volume], transaction_params[:stock])
+                redirect_to transactions_url, notice: "Stock was successfully bought"
+            elsif params[:method]== "Sell"
+                current_user.sell_stock!(transaction_params[:volume], transaction_params[:stock])
+                redirect_to transactions_url, notice: "Stock was succesfully sold"
             end
-            
-            ActiveRecord::Base.transaction do
-                if @transaction.save && @stock.save
-                    redirect_to transactions_url, notice: "Category was successfully created."
-                end
-            end
-        elsif @transaction.method == "Sell"
-            if @stock
-                if @stock.volume >= transaction_volume
-                    @transaction.price = IEX_CLIENT.quote(transaction_params[:stock]).latest_price
-                    @stock.volume -= transaction_volume
-                    ActiveRecord::Base.transaction do
-                        if @transaction.save && @stock.save
-                            redirect_to transactions_url, notice: "Stocks were successfully sold."
-                        end  
-                    end
-                else
-                    redirect_to transactions_url, notice: "You do not own enough shares of this stock."
-                end
-            else
-                redirect_to transactions_url, notice: "You do not own any shares of this stock."
-            end
+        rescue ArgumentError => e
+            redirect_to transactions_url, notice: e.message
+        rescue ActiveRecord::Validations
+            redirect_to transactoins_url, notice: "Error in executing transaction. Contact admin."
         end
     end
 
