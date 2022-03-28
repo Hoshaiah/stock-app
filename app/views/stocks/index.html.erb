@@ -3,6 +3,8 @@
         <th class="pl-2 pr-2 text-center">Stock</th>
         <th class="pl-2 pr-2 text-center">Average Price</th>
         <th class="pl-2 pr-2 text-center">Volume</th>
+        <th class="pl-2 pr-2 text-center">Amount</th>
+ 
     </tr>
 
     <% @stocks.each do |stock| %>
@@ -10,6 +12,7 @@
             <td class="pl-2 pr-2 text-center"><%= stock.symbol%> </td>
             <td class="pl-2 pr-2 text-center">$<%= stock.average_price %> </td>
             <td class="pl-2 pr-2 text-center"><%= stock.volume %> </td>
+            <td class="pl-2 pr-2 text-center">$<%= (stock.volume * stock.average_price).round(2) %> </td>
         </tr>
     <% end %>
 </table

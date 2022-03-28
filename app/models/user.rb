@@ -3,8 +3,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
-  has_many :transactions
-  has_many :stocks
+  has_many :transactions, :dependent => :destroy
+  has_many :stocks, :dependent => :destroy
 
   def buy_stock!(volume, stock)
     symbol = stock
