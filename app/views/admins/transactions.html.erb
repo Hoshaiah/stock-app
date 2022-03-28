@@ -1,26 +1,25 @@
-<h1> Transactions </h1>
 <table>
     <tr>
-        <th> User ID </th>
-        <th> User email </th>
-        <th>Stock</th>
-        <th>Price</th>
-        <th>Volume</th>
-        <th>Amount</th>
-        <th>Action</th>
-        <th>DateTime</th>
+        <th class="pl-2 pr-2 text-center"> User ID </th>
+        <th class="pl-2 pr-2 text-center"> User email </th>
+        <th class="pl-2 pr-2 text-center">Stock</th>
+        <th class="pl-2 pr-2 text-center">Price</th>
+        <th class="pl-2 pr-2 text-center">Volume</th>
+        <th class="pl-2 pr-2 text-center">Amount</th>
+        <th class="pl-2 pr-2 text-center">Action</th>
+        <th class="pl-2 pr-2 text-center">DateTime</th>
     </tr>
 
     <% @transactions.each do |transaction| %>
         <tr>
-            <td><%= transaction.user_id %> </td>
-            <td><%= transaction.user.email %> </td>
-            <td><%= transaction.stock %> </td>
-            <td><%= transaction.price %> </td>
-            <td><%= transaction.volume %> </td>
-            <td><%= "$" +(transaction.volume * transaction.price).round(2).to_s %> </td>
-            <td><%= transaction.method %> </td>
-            <td><%= transaction.created_at %> </td>
+            <td class="pl-2 pr-2 text-center"><%= transaction.user_id %> </td>
+            <td class="pl-2 pr-2 text-center"><%= transaction.user.email %> </td>
+            <td class="pl-2 pr-2 text-center"><%= transaction.stock %> </td>
+            <td class="pl-2 pr-2 text-center">$<%= transaction.price %> </td>
+            <td class="pl-2 pr-2 text-center"><%= transaction.volume %> </td>
+            <td class="pl-2 pr-2 text-center"><%= "$" +(transaction.volume * transaction.price).round(2).to_s %> </td>
+            <td class="pl-2 pr-2 text-center"><%= transaction.method %> </td>
+            <td class="pl-2 pr-2 text-center text-xs"><%= transaction.created_at %> </td>
         </tr>
     <% end %>
 </table

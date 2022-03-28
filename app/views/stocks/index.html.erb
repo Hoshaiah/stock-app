@@ -1,16 +1,15 @@
-<h1> User Portfolio</h1>
-<table>
+<table class= "m-4">
     <tr>
-        <th>Stock</th>
-        <th>Average Price</th>
-        <th>Volume</th>
+        <th class="pl-2 pr-2 text-center">Stock</th>
+        <th class="pl-2 pr-2 text-center">Average Price</th>
+        <th class="pl-2 pr-2 text-center">Volume</th>
     </tr>
 
     <% @stocks.each do |stock| %>
         <tr>
-            <td><%= stock.symbol%> </td>
-            <td><%= stock.average_price %> </td>
-            <td><%= stock.volume %> </td>
+            <td class="pl-2 pr-2 text-center"><%= stock.symbol%> </td>
+            <td class="pl-2 pr-2 text-center">$<%= stock.average_price %> </td>
+            <td class="pl-2 pr-2 text-center"><%= stock.volume %> </td>
         </tr>
     <% end %>
 </table

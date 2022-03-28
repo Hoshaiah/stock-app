@@ -1,8 +1,10 @@
 <% if @stock_data %>
-  <h1><%=@stock_data.symbol%></h1>
-  <h2><%=@stock_data.company_name%></h2>
-  <h2><%=@stock_data.latest_price%></h2>
-  <h2><%=@stock_data.change_percent_s%></h2>
+  <div class="border-slate-400 flex flex-col w-full p-4 pl-10">
+    <h1 class="text-lg font-bold"><%=@stock_data.symbol%></h1>
+    <h2><%=@stock_data.company_name%></h2>
+    <h2>$ <%=@stock_data.latest_price%></h2>
+    <h2><%=@stock_data.change_percent_s%></h2>
+  </div>
 <% end %>
 <%= form_with(model: @transaction) do |form| %>
   <% if @transaction.errors.any? %>
@@ -17,9 +19,9 @@
   <% end %>
 
   <div class="font-bold mt-8 ml-12">
-    <%= form.label :stock, "Stock Symbol" %>
+    <%= form.label :stock, "Stock" %>
     <%= form.select :stock , options_for_select(SYMBOLS, @stock_data ? @stock_data.symbol : SYMBOLS.first), :id => "show_stock"  %>
-    <%= link_to "Quote", home_path(:stock => ""), :id=>"quote_link"%>
+    <%= link_to "Quote", home_path(:stock => ""), :id=>"quote_link" , class:"text-blue-700 hover:text-blue-300"%>
     <%= javascript_pack_tag "show_stock" %>
   </div>
   
@@ -28,12 +30,14 @@
     <%= form.number_field :volume%>
   </div>
 
-  <div>
-    <%= form.submit "Buy", :name => :method %>
-  </div>
+  <div class="flex">
+    <div class="flex justify-center items-center text-white font-bold m-3 mt-5 bg-green-400 hover:bg-green-200 hover:text-black p-4 rounded-md w-36 h-12 ">
+      <%= form.submit "Buy", :name => :method %>
+    </div>
 
-  <div>
-    <%= form.submit "Sell", :name => :method%>
+    <div class="flex justify-center items-center text-white font-bold m-3 mt-5 bg-red-400 hover:bg-red-200 hover:text-black p-4 rounded-md w-36 h-12 ">
+      <%= form.submit "Sell", :name => :method%>
+    </div>
   </div>
 
 <% end %>
