@@ -22,7 +22,7 @@
     <%= form.label :stock, "Stock" %>
     <%= form.select :stock , options_for_select(SYMBOLS, @stock_data ? @stock_data.symbol : SYMBOLS.first), :id => "show_stock"  %>
     <%= link_to "Quote", home_path(:stock => ""), :id=>"quote_link" , class:"text-blue-700 hover:text-blue-300"%>
-    <%= javascript_pack_tag "show_stock" %>
+    <%= javascript_pack_tag "show_symbol" %>
   </div>
   
   <div class="font-bold mt-8 ml-12">
