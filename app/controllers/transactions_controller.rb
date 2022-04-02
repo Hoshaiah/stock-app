@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
             end
         rescue ArgumentError => e
             redirect_to transactions_url, notice: e.message
-        rescue ActiveRecord::Validations
+        rescue ActiveRecord::ValidationError
             redirect_to transactoins_url, notice: "Error in executing transaction. Contact admin."
         end
     end
