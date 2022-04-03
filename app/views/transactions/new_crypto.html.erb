@@ -1,0 +1,40 @@
+<% if @crypto_data %>
+  <div class="border-slate-400 flex flex-col w-full p-4 pl-10">
+    <h1 class="text-lg font-bold"><%=@crypto_data["asset_id"]%></h1>
+    <h2><%=@crypto_data["name"]%></h2>
+    <h2>$ <%=@crypto_data["price_usd"]%></h2>
+  </div>
+<% end %>
+
+
+<%= form_with(model: @transaction) do |form| %>
+  <% if @transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transactions.errors.count, "error") %> prohibited this task from being saved:</h2>
+      <ul>
+        <% @transaction.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="font-bold mt-8 ml-12">
+    <%= form.label :stock, "Stock" %>
+    <%= form.select :stock , options_for_select(@crypto_symbols, @crypto_data ? @crypto_data["asset_id"] : @crypto_symbols.first), :id => "show_stock"  %>
+    <%= link_to "Quote", crypto_path(:symbol => ""), :id=>"quote_link" , class:"text-blue-700 hover:text-blue-300"%>  | 
+    <%= link_to "Quote all rates", crypto_path(:symbol=> "", :all=>1), :id=>"quote_all_link", class:"text-blue-700 hover:text-blue-300"%>
+    <%= javascript_pack_tag "show_symbol" %>
+  </div>
+
+<% end %>
+<% if @quotes%>
+    <div class="flex flex-wrap justify-center w-full">
+        <% @quotes.each do |quote| %>
+            <div class="w-1/5 h-40 m-2 border-2 rounded-md text-md">
+                <h1 class="font-bold text-sm"><%= quote["asset_id_quote"]%></h1>
+                <h2><%= quote["rate"].round(2) %></h2>
+            </div>
+        <% end %>
+    </div>
+<% end %>

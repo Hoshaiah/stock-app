@@ -59,3 +59,4 @@ gem 'devise'
 
 gem 'iex-ruby-client'
 gem "tailwindcss-rails", "~> 2.0"
+gem 'faraday'
