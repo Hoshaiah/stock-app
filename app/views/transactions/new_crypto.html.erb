@@ -20,7 +20,7 @@
   <% end %>
 
   <div class="font-bold mt-8 ml-12">
-    <%= form.label :stock, "Stock" %>
+    <%= form.label :stock, "Crypto" %>
     <%= form.select :stock , options_for_select(@crypto_symbols, @crypto_data ? @crypto_data["asset_id"] : @crypto_symbols.first), :id => "show_stock"  %>
     <%= link_to "Quote", crypto_path(:symbol => ""), :id=>"quote_link" , class:"text-blue-700 hover:text-blue-300"%>  | 
     <%= link_to "Quote all rates", crypto_path(:symbol=> "", :all=>1), :id=>"quote_all_link", class:"text-blue-700 hover:text-blue-300"%>
